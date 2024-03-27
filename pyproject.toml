@@ -1,0 +1,14 @@
+[tool.poetry]
+name = "webscrapping"
+version = "0.1.0"
+description = "Get and log URL categorized from User URL inputs"
+authors = ["JAIRO ALBERTO VELEZ GIRALDO <jairo.velez@uao.edu.co>, JOAQUIN ANDRES ALARCON GUEVARA <joaquin.alarcon@uao.edu.co>, GUILLERMO LEON ZAPATA ALVAREZ <guillermo.zapata@uao.edu.co>, YONILIMAN GALVES AGUIRRE <yoniliman.galves@uao.edu.co>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
