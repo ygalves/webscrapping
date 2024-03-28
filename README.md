@@ -59,3 +59,5 @@ Vamos a tener 3 servicios docker:
 - Una vez en la terminal ubuntu es necesario installar pip3, Docker, Docker Compose
 - clona este repositorio desde la teminal de ubuntu, por defecto la carpeta debera crearse en ~/home/Webscrapping
 - Usando Visual Studio abre area de trabajo y busca la carpeta (en la unidad de ubuntu) donde clonaste este git y abre webscrapping.code-workspace
+- herramienas que puedes instalar y usar para verificar las redes en ubuntu: netstat, netcat, nmap
+- test
