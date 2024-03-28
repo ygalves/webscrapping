@@ -52,3 +52,10 @@ Vamos a tener 3 servicios docker:
     - PHPmyAdmin (Necesaria para administracion de la DB)
     - Model NLP para WebScrapping
     - Streamlit, interface con el usuario
+
+## Requisitos
+- Si tienes windows debes instalar WSL para tener una terminal ubuntu en tu sistema, esta creará una unidad Ubuntu donde luego podrás clonar este repositorio
+- Instala Visual Studio + la extension de WSL, recomendado instalar las extensiones de Docker, GitHub (no es necesario Github-copilot ya que requiere cuenta de pago y no es necesaria para este ejemplo), recomendado instalar las extenciones de prettier para yaml, toml, php, html 
+- Una vez en la terminal ubuntu es necesario installar pip3, Docker, Docker Compose
+- clona este repositorio desde la teminal de ubuntu, por defecto la carpeta debera crearse en ~/home/Webscrapping
+- Usando Visual Studio abre area de trabajo y busca la carpeta (en la unidad de ubuntu) donde clonaste este git y abre webscrapping.code-workspace
