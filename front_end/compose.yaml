@@ -1,0 +1,41 @@
+#################################################################
+# PHP dev environment with Apache, MariaDB and phpMyAdmin
+#
+# @author: Vanessa Richie Alia-Trapero <vrat.engr@gmail.com>
+# @adapted: Yoniliman Galvis Aguirre <yoniliman.galves@uao.edu.co>
+#################################################################
+
+# this is optional and for info purposes only, not a basis for this file
+version: '3.8'
+
+# list of containers
+services:
+    app: # service name for our web server and php
+      container_name: docker-php
+      restart: on-failure:5 #always
+      networks:
+        - docker-network
+      ports:
+        - 8004:80 # map TCP port 80 to xxxx
+        - 4004:443 # map SSL port 443 to xxx
+        # - "0.0.0.0:4004:443" # other format to specify the port mapping
+      volumes:
+        - ./html:/var/www/html # ./<source code directory>:<apache web directory within the container> - this is a two-way binding, so what happens in the container happens in the source
+        # - ./config/vhost.conf:/etc/apache2/sites-enabled/000-default.conf # this mounts vhost.conf as 000-default.conf, so it puts it directly in sites-enabled
+      #depends_on:
+      #  - db # <service name for our database> - this is to specify dependency/requirements, our app requires the db container for it to work
+      # depends_on: [db] # other format to specify depends_on
+      #command: ["./wait-for-it.sh", "http://192.168.100.100:8004", "--", "yourfrontendcmd"]
+      build: # there may be cases where you need to customize an image from Docker Hub, so instead of specifying an image for this service, we will define the image via the Dockerfile
+        context: . # path to where the Dockerfile resides
+        dockerfile: Dockerfile # name of the Dockerfile, default is Dockerfile, you can omit this if you follow the standard naming
+      extra_hosts:
+        - "iataskforce.com:127.0.0.1" # this adds an entry in /etc/hosts, note that in Windows using WSL, you should also add an entry in Window's hosts file (C:\Windows\System32\drivers\etc\hosts)
+
+
+networks: # an app usually needs multiple services to function, defining a network groups these services to create the app environment
+  docker-network: # <network-name> - in Docker Dsektop, this will be prepended with the folder name
+    # driver: bridge # bridge is the default driver, so you can omit this line
+
+volumes: # we are going to persist the db data using volumes so that even if you stop the container, the data will persist within docker
+  dbdata: # <volume-name> - in Docker Dsektop, this will be prepended with the folder name

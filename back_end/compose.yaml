@@ -1,0 +1,49 @@
+#################################################################
+# PHP dev environment with Apache, MariaDB and phpMyAdmin
+#
+# @author: Vanessa Richie Alia-Trapero <vrat.engr@gmail.com>
+#################################################################
+
+# this is optional and for info purposes only, not a basis for this file
+#version: '3.8'
+
+# list of containers
+services:
+    db: # service name for our database and can be customized per your setup
+      container_name: docker-mariadb # <container-name>
+      image: mariadb:11.0 # https://hub.docker.com/_/mariadb
+      restart: on-failure:5 #always # restarts the service whenever any defined configuration changes
+      networks:
+        - docker-network # <network-name>
+      expose:
+        - "9004"
+      ports:
+        - 9004:3306
+      volumes:
+        - ./config/db:/docker-entrypoint-initdb.d/ # <source folder>:/docker-entrypoint-initdb.d/ - this will dump all the .sql or tar files in source folder
+        - ./config/db/data.sql:/docker-entrypoint-initdb.d/data.sql # dump specific file
+        #- ./config/db/data.sql:/docker-entrypoint-initdb.d/db.sql # dump specific file
+        - dbdata:/var/lib/mysql # <volume name>:<mapped location within the container>
+      environment:
+        MARIADB_ROOT_PASSWORD : root # <root-password>
+        MARIADB_DATABASE: wsdb # <database-name>
+        MARIADB_USER : user # <database-user>
+        MARIADB_PASSWORD : user # <user-password>
+
+    phpmyadmin: # optional if you want to have GUI for your database
+      container_name: docker-phpmyadmin
+      image: phpmyadmin:5.2.1
+      restart: on-failure:5 #always
+      networks:
+        - docker-network
+      ports:
+        - 5004:80
+      depends_on:
+        - db
+
+networks: # an app usually needs multiple services to function, defining a network groups these services to create the app environment
+  docker-network: # <network-name> - in Docker Dsektop, this will be prepended with the folder name
+    # driver: bridge # bridge is the default driver, so you can omit this line
+
+volumes: # we are going to persist the db data using volumes so that even if you stop the container, the data will persist within docker
+  dbdata: # <volume-name> - in Docker Dsektop, this will be prepended with the folder name
