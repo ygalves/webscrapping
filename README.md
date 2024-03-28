@@ -45,3 +45,10 @@ Nos basamos y usamos el conocimiento de los siguientes autores a los cuales les 
 #### Backend
     - Vanessa Richie Alia-Trapero,  Senior Full Stack Web Dev & AI Enthusiast, Philippines
         https://github.com/vratengr/docker
+
+## DOCKER
+Vamos a tener 3 servicios docker:
+    - Base de Datos, MariaDB
+    - PHPmyAdmin (Necesaria para administracion de la DB)
+    - Model NLP para WebScrapping
+    - Streamlit, interface con el usuario
