@@ -1,98 +1,47 @@
-# Docker vs XAMPP
+# WEBSCRAPPING APP (Docker - MariaDB - PHPMyAdmin - StreamLit)
 
-If you are new to transferring to Docker/WSL2 from XAMPP then here are some of the main differences:
-- XAMPP
-    - you install this in your OS
-    - it already has predefined/bundled services (Apache, MariaDB, PHP, Perl and other extensions/modules)
-    - your code resides in your OS
-    - and you run/access the code in your OS
-- Docker with WSL2
-    - your host OS is Windows, then Docker and WSL2 are installed in here
-    - WSL2 contains a distro (a Linux OS)
-    - your code resides in the distro which does not have any bundled services
-    - you create a Dockerfile or a Docker Compose file to define your required services (Apache, MariaDB, PHP) and run it to create a Docker Container
-    - the Docker Container:
-        - it's like creating your own OS and XAMPP (with only the services you defined)
-        - it will also have a copy of your codes
-    - you access your site in your host OS
+## Descripción: 
+LinkScribe es una aplicación web/mobile/desktop que utiliza NLP para permitir a los usuarios crear y organizar listas de enlaces de forma fácil y eficiente. Con LinkScribe, los usuarios pueden simplemente copiar y pegar un enlace web, y la aplicación lo procesará automáticamente, extrayendo información sobre el contenido de la página y clasificándolos de acuerdo a la información obtenida, por ejemplo, AI, Machine Learning, Educación, Travel etc.
+Los usuarios pueden crear categorías personalizadas para sus listas y buscar entre ellas utilizando términos clave y palabras clave.
 
+### Funcionalidades:
+Crear y guardar listas de enlaces: Los usuarios pueden crear listas de enlaces y guardarlas en su cuenta. Cada lista puede tener una categoría y una descripción personalizada. (Opcional)
+Extracción automática de información(ML Componente): LinkScribe utiliza NLP para extraer automáticamente información relevante de los enlaces, incluyendo el título, la descripción y la imagen de vista previa.
+Búsqueda y filtrado avanzados: Los usuarios pueden buscar entre sus listas utilizando términos clave y palabras clave. También pueden filtrar las listas por categoría, fecha de creación y fecha de modificación.(Opcional)
+Compartir listas: Los usuarios pueden compartir sus listas con amigos y colegas a través de un enlace público o una opción de invitación privada. (Opcional)
+
+## Prouesta
+a. Descripción de la empresa y sus necesidades:
+La empresa SearchInt, quien ofrece servicios de desarrollo de software dirigido a centros de investigación y universidades, requiere desarrollar una aplicación web de nombre LinkScribe, que utilice NLP para permitir a los usuarios crear y organizar listas de enlaces de forma fácil y eficiente, agilizando los procesos de investigación al categorizar y resumir el contenido de páginas web que podrán servir de referencia para las diferentes necesidades de los equipos.
+
+### Requerimientos:
+Fácil uso: Los usuarios pueden simplemente copiar y pegar un enlace web, y la aplicación lo procesará automáticamente, extrayendo información sobre el contenido de la página y clasificándolos de acuerdo a la información obtenida, por ejemplo, AI, Machine Learning, Educación, Travel etc.
+Crear y guardar listas de enlaces: Los usuarios pueden crear listas de enlaces y guardarlas en su cuenta. Cada lista puede tener una categoría y una descripción personalizada. (Opcional)
+Extracción automática de información(ML Componente): LinkScribe utiliza NLP para extraer automáticamente información relevante de los enlaces, incluyendo el título, la descripción y la imagen de vista previa.
+Búsqueda y filtrado avanzados: Los usuarios pueden buscar entre sus listas utilizando términos clave y palabras clave. También pueden filtrar las listas por categoría, fecha de creación y fecha de modificación.(Opcional)
+Compartir listas: Los usuarios pueden compartir sus listas con amigos y colegas a través de un enlace público o una opción de invitación privada. (Opcional)
+
+### Restricciones:
+Datasets de entreno: Nuestros clientes presentan gran interés en las categorías representadas en los siguientes datasets, debe seleccionar 1 para entrenar el modelo:
+https://www.kaggle.com/datasets/hetulmehta/website-classification/data
+https://data.webarchive.org.uk/opendata/ukwa.ds.1/classification/
 
 ### BACKGROUND
-Since my early dev years, I've been used to using WAMP/LAMP/MAMP then my favorite would be XAMPP in Ubuntu.
+Somos estudiantes de segundo semestre de la Especializacion en Inteligencia Artificial de la Universidad Autónoma de Occidente
+Cali - Colombia
 
-However, I had to reformat my laptop to Windows and figured, why not try Docker and WSL2 which I only had a glimpse before.
+- Joaquin Andres Alarcon Guevara
+- Jairo Velez
+- Guillermo Leon Zapata Alvarez
+- Yoniliman Galvis Aguirre
 
-So here it is, my simple sample of PHP local dev environment. Well, not really the bare minimum as I've touched some topics I usually use. So feel free to pick which one you only need or clone the entire repo as your base. 😊
-
-
-### PREREQUISITE
-- [Basic understanding of the Docker concept](https://www.section.io/engineering-education/docker-concepts/)
-- [Install WSL2](https://learn.microsoft.com/en-us/windows/wsl/install)
-```
-wsl install
-```
-- [Install VS Code](https://code.visualstudio.com/download) - Visual Studio Code has been optimized for better user experience and is [well documented](https://learn.microsoft.com/en-us/windows/wsl/tutorials/wsl-vscode) when using WSL2 and Docker in Windows, which makes it a good starting point if you're new to this.
-- [Install Docker Desktop](https://learn.microsoft.com/en-us/windows/wsl/tutorials/wsl-containers)
-
-
-### SETUP
-- All installations above are done on the host environment, in my case it's Windows
-- All our codes will be inside our WSL2 distro, in my case it's Ubuntu
-- We will then use VS Code to [connect to our distro](https://code.visualstudio.com/docs/remote/wsl) and deploy/access the codes as if it's just within our host environment
-    - If you are using Git for your codes, install Git within the distro and clone your codes in there
-    
-
-### ABOUT THE CODE
-Comments are added inline in each file so you can decide which are required, which ones you need, which can be customized.
-
-- This demo creates 3 containers:
-    - [PHP with Apache](https://hub.docker.com/_/php)
-    - [MariaDB](https://hub.docker.com/_/mariadb) for our database
-    - [phpMyAdmin](https://hub.docker.com/_/phpmyadmin) for graphical interface of our database
-- PHP with Apache
-    - part of the container's definition is in `compose.yaml`, but the majority of the setup is defined in the `Dockerfile`
-    - a vhost file has been defined so that the app can be accessed thru an alias rather than localhost
-        - you can replace `vratengr.com` with your own alias
-        - in `compose.yaml`, the alias is defined in `extra_vhosts`, which creates an entry in the container's /etc/hosts file
-        - and since we're using Docker with WSL2, we have to define the alias as well in the host environment, which is in C:\Windows\System32\drivers\etc\hosts
-            - localhost works out of the box since it is defined automatically in Windows, in WSL2 instance and in the Docker Container
-    - the codes are mounted so that the changes we make in our WSL files will reflect in the container, see `volumes`
-- MariaDB
-    - this is our database, it's based on MySQL but an enhanced one, so you could use all MySQL process here
-    - we've setup an initial dump by copying a dump file into /docker-entrypoint-initdb.d, see `volumes`
-    - DB data is persisted which means, even if the container/image is stopped, data will remain as it was last left, see 2nd line in `volumes`
-    - Docker volumes are like a hard disk where Docker stores data separately
-- phpMyAdmin
-    - I just like having a GUI for the database, this is optional, in any case, this just reads our MariaDB database
-
-If you're uncertain where to start, check out `compose.yaml`.
-- To create your dev environment, open the terminal and run: `docker compose up -d`
-    - this checks your `compose.yaml` file and create the images based on your definitions
-    - -d runs the installation in detached mode
-        - you can then check the status in Docker Desktop
-    - alternative compose file names are `docker-compose.yml`, `docker-compose.yaml`, `compose.yaml`, `compose.yml`
-        - as per [the official documentation](https://docs.docker.com/compose/compose-file/03-compose-file/), `compose.yaml` is preferred
-    - run the command where the compose file is located. it's ideal to put it in your project's root directory but you are free to put it anywhere, just check the relative paths used within the file and run docker compose where your compose file is
-
-
-### NOTES / REFERENCES
-- To create a container, at the bare minimum, you can just have a Dockerfile to define it
-- In full-pledged sites, it takes more than one service to get your app up and running.
-    - For example, in a PHP website, you would need at least: PHP, Apache and a database
-    - Each container by default is independent, and in order for them to communicate with each other, you need to create a network to house them.
-    - Docker Compose helps set up the relationship and build complex networks.
-- When using a docker image, if no version has been provided, it uses the latest.
-    - It's best to specify the version to ensure that your app will always work as you have tested since the latest build could be different per release
-- [Docker Cheatsheet](https://github.com/eon01/DockerCheatSheet)
-
-### TECHNOLOGIES
-- Docker
-- Docker Compose
-- WSL2
-- PHP
-- Apache
-- MariaDB
-- phpMyAdmin
-- Git
-- Vhost
-- [SSL](https://realtechtalk.com/%5Bwarn%5D_RSA_server_certificate_is_a_CA_certificate_BasicConstraints_CA_TRUE__Apache_Error_Solution-1870-articles)
+### BIBLIOGRAFIA
+Nos basamos y usamos el conocimiento de los siguientes autores a los cuales les agradecemos su aporte a la comunidad
+#### lmodel:
+    - hetulmehta, Hetul Mehta, Kaggle Expert, Mumbai, Maharashtra, India, Technical Head at DataZen
+        https://www.kaggle.com/code/hetulmehta/classification-of-websites
+    - pagutierrez, Pedro Antonio Gutiérrez, Ph.D Computer Science and Artificial Intelligence, Spain, University of Córdoba
+        https://notebook.community/pagutierrez/tutorial-sklearn/notebooks-spanish/11-extraccion_caracteristicas_texto
+#### Backend
+    - Vanessa Richie Alia-Trapero,  Senior Full Stack Web Dev & AI Enthusiast, Philippines
+        https://github.com/vratengr/docker

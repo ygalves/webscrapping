@@ -18,7 +18,7 @@ services:
       expose:
         - "9004"
       ports:
-        - 9004:3306
+        - 9004:tcp
       volumes:
         - ./config/db:/docker-entrypoint-initdb.d/ # <source folder>:/docker-entrypoint-initdb.d/ - this will dump all the .sql or tar files in source folder
         - ./config/db/data.sql:/docker-entrypoint-initdb.d/data.sql # dump specific file
