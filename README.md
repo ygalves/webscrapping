@@ -10,7 +10,7 @@ Extracción automática de información(ML Componente): LinkScribe utiliza NLP p
 Búsqueda y filtrado avanzados: Los usuarios pueden buscar entre sus listas utilizando términos clave y palabras clave. También pueden filtrar las listas por categoría, fecha de creación y fecha de modificación.(Opcional)
 Compartir listas: Los usuarios pueden compartir sus listas con amigos y colegas a través de un enlace público o una opción de invitación privada. (Opcional)
 
-## Prouesta
+## Propuesta
 a. Descripción de la empresa y sus necesidades:
 La empresa SearchInt, quien ofrece servicios de desarrollo de software dirigido a centros de investigación y universidades, requiere desarrollar una aplicación web de nombre LinkScribe, que utilice NLP para permitir a los usuarios crear y organizar listas de enlaces de forma fácil y eficiente, agilizando los procesos de investigación al categorizar y resumir el contenido de páginas web que podrán servir de referencia para las diferentes necesidades de los equipos.
 
