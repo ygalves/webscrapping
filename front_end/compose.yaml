@@ -31,10 +31,34 @@ services:
       #command: ["./wait-for-it.sh", "http://192.168.100.100:8004", "--", "yourfrontendcmd"]
       build: # there may be cases where you need to customize an image from Docker Hub, so instead of specifying an image for this service, we will define the image via the Dockerfile
         context: . # path to where the Dockerfile resides
-        dockerfile: Dockerfile # name of the Dockerfile, default is Dockerfile, you can omit this if you follow the standard naming
+        dockerfile: Dockerfile_php # name of the Dockerfile, default is Dockerfile, you can omit this if you follow the standard naming
       extra_hosts:
         - "iataskforce.com:127.0.0.1" # this adds an entry in /etc/hosts, note that in Windows using WSL, you should also add an entry in Window's hosts file (C:\Windows\System32\drivers\etc\hosts)
 
+    web: # service name for our web server and php
+      container_name: docker-streamlit
+      restart: on-failure:5 #always
+      image: mi_app_streamlit
+      external_links:
+        - docker-mariadb:db
+      networks:
+        - front-tier
+        - back_end_back-tier
+      ports:
+        - 8501:8501 # map TCP port 80 to xxxx
+      # - "0.0.0.0:4004:443" # other format to specify the port mapping
+      volumes:
+         - ./streamlit_agent/:/app/streamlit_agent # ./<source code directory>:<apache web directory within the container> - this is a two-way binding, so what happens in the container happens in the source
+        # - ./config/vhost.conf:/etc/apache2/sites-enabled/000-default.conf # this mounts vhost.conf as 000-default.conf, so it puts it directly in sites-enabled
+      #depends_on:
+      #  - db # <service name for our database> - this is to specify dependency/requirements, our app requires the db container for it to work
+      # depends_on: [db] # other format to specify depends_on
+      #command: ["./wait-for-it.sh", "http://192.168.100.100:8004", "--", "yourfrontendcmd"]
+      build: # there may be cases where you need to customize an image from Docker Hub, so instead of specifying an image for this service, we will define the image via the Dockerfile
+      #  context: . # path to where the Dockerfile resides
+        dockerfile: Dockerfile # name of the Dockerfile, default is Dockerfile, you can omit this if you follow the standard naming
+      #extra_hosts:
+      #s  - "iataskforce.com:127.0.0.1" # this adds an entry in /etc/hosts, note that in Windows using WSL, you should also add an entry in Window's hosts file (C:\Windows\System32\drivers\etc\hosts)
 
 networks: # an app usually needs multiple services to function, defining a network groups these services to create the app environment
   front-tier: {}
