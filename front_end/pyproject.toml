@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "pyproject"
+version = "0.1.0"
+description = ""
+authors =  ["JAIRO ALBERTO VELEZ GIRALDO <jairo.velez@uao.edu.co>, JOAQUIN ANDRES ALARCON GUEVARA <joaquin.alarcon@uao.edu.co>, GUILLERMO LEON ZAPATA ALVAREZ <guillermo.zapata@uao.edu.co>, YONILIMAN GALVES AGUIRRE <yoniliman.galves@uao.edu.co>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+streamlit = "1.21.0"
+numba = "0.57"
+numpy = "1.23.0"
+pandas= "1.3.4"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
