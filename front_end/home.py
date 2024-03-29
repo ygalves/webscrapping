@@ -2,13 +2,35 @@ import streamlit as st
 from user import login
 import pandas as pd
 import numpy as np
+import requests
+import json
+
+# 0 ***********************************************************************************************
  
 headerSection = st.container()
 mainSection = st.container()
 loginSection = st.container()
 logOutSection = st.container()
 
-import streamlit as st
+# 1 ***********************************************************************************************
+
+def call_api(website_url):
+  
+    api_url = "http://0.0.0.0:8070/model/predict"
+
+    payload = json.dumps({
+    "website_url": website_url
+    })
+    headers = {
+    'Content-Type': 'application/json'
+    }
+
+    response = requests.request("POST", api_url, headers=headers, data=payload)
+    response_json = response.json()
+    st.write('La categoria de la url ingresada es:', response_json['prediction'])
+    print(response.text)
+
+# 2 *************************************************************************************************
 
 def page_Link():
     #st.markdown("# Main page 🎈")
@@ -16,15 +38,17 @@ def page_Link():
     st.header("LinkScribe: Link processor")
     urlLink = st.text_input("Enter the url of the link to process: ")
     processingClicked = st.button ("Start Processing", key="processing")
-    Respuesta = False
+    print('La url ingresa es:',urlLink)
+    #Respuesta = False
     if processingClicked:
+        call_api(urlLink)
         #Enviar solicitud al modelo por medio del backend, controlar respuesta.
-        Respuesta = False
-        if Respuesta:
-            Mensaje = "We are making progress! 🏆"
-        else:
-            Mensaje = "Sorry, the link entered is not related to the different categories available ☹️"
-        st.write(Mensaje)
+        #Respuesta = False
+        #if Respuesta:
+        #    Mensaje = "We are making progress! 🏆"
+        #else:
+        #    Mensaje = "Sorry, the link entered is not related to the different categories available ☹️"
+        #st.write(Mensaje)
         st.balloons()
 
     # ---- BARRA LATERAL ----
@@ -34,6 +58,9 @@ def page_Link():
         ("List1", "List2", "List3")
     )
     addlistClicked = st.sidebar.button ("Add link to list", key="adding")
+    return urlLink
+
+# 3 ********************************************************************************************************
 
 def page_List():
     df = pd.DataFrame({
@@ -86,6 +113,7 @@ page_names_to_funcs = {
 #    "Create a list 📜": page_Other,    
 }
 
+# 4 *************************************************************************************************
  
 def show_main_page():
     with mainSection:

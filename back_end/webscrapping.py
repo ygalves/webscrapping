@@ -26,9 +26,9 @@ simplefilter(action='ignore', category=DeprecationWarning)
 class Model:
     
     def __init__(self): 
-        self.model = load('back_end\model\sklearn\model_A.pk')
-        self.vectorizer = load('back_end\__vectorizer\__vectorizer_A.pk')
-        self.dictionary = load('back_end\dictionary\id_to_category_dict_A.pk')
+        self.model = load('webscrapping/back_end/__model/sklearn/__model_A.pk')
+        self.vectorizer = load('webscrapping/back_end/__vectorizer/__vectorizer_A.pk')
+        self.dictionary = load('webscrapping/back_end/dictionary/id_to_category_dict_A.pk')
 
 # 2 *******************************************************************************************************************************
 
