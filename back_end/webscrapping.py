@@ -26,15 +26,14 @@ simplefilter(action='ignore', category=DeprecationWarning)
 class Model:
     
     def __init__(self): 
-        self.model = load('webscrapping/back_end/__model/sklearn/__model_A.pk')
-        self.vectorizer = load('webscrapping/back_end/__vectorizer/__vectorizer_A.pk')
-        self.dictionary = load('webscrapping/back_end/dictionary/id_to_category_dict_A.pk')
+        self.model = load('back_end\__model\sklearn\__model_A.pk')
+        self.vectorizer = load('back_end\__vectorizer\__vectorizer_A.pk')
+        self.dictionary = load('back_end\dictionary\id_to_category_dict_A.pk')
 
 # 2 *******************************************************************************************************************************
 
     def visit_url(self, website_url):
         from bs4 import BeautifulSoup
-        import bs4 as bs4
         import requests
             
         #headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36'}

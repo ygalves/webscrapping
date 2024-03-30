@@ -10,7 +10,9 @@ web_model = {}
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    print("Cargando el modelo de web scrapping") 
+    print("Cargando el modelo de web scrapping")
+    web_model['web'] = Model()
+
     yield 
     print("Terminando la aplicación de web scrapping")
 
@@ -34,10 +36,13 @@ class WebModel(BaseModel):
         
 @model_router.post("/predict")
 async def predict(request: Request, data: WebModel):
-    web_model = Model()
-    if web_model is None:
+    query_params = dict(request.query_params)
+    model_name = query_params.get("model_name")
+    model = web_model.get(model_name, None)
+    #web_model = Model()
+    if model is None:
         return JSONResponse(status_code=404, content={"message": "Model not found"})
-    prediction = web_model.predict(data.website_url)
+    prediction = model.predict(data.website_url)
     return JSONResponse(content={"La url ingresada es": data.website_url,
                                  "La categoria de la url es": prediction})
 
