@@ -16,32 +16,31 @@ logOutSection = st.container()
 
 # 1 ***********************************************************************************************
 
-def call_api(website_url):
-  
-    api_url = "http://localhost:8070/model/predict"
-
-    payload = json.dumps({
-    "website_url": website_url
-    })
-    headers = {
-    'Content-Type': 'application/json'
-    }
-
+def call_api(website_url):  
+    api_url = "http://localhost:8070/model/predict?model_name=web"
+    payload = json.dumps({"website_url": website_url})
+    headers = {'Content-Type': 'application/json'}
     response = requests.request("POST", api_url, headers=headers, data=payload)
     response_json = response.json()
-    st.write('La categoria de la url ingresada es:', response_json['La categoria de la url es'])
-    print(response.text)
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+        st.image(response_json['Icon'])
+        st.image(response_json['Site_image'], width = 300)
+
+    with col2:
+        st.write(response_json['Título'])
+        st.write(response_json['Descripción'])
+        st.write(response_json['Url'])
+        st.write(response_json['Categoría'])
 
 # 2 *************************************************************************************************
 
 def page_Link():
-    #st.markdown("# Main page 🎈")
-    #st.sidebar.markdown("# Main page 🎈")
     st.header("LinkScribe: Link processor")
     urlLink = st.text_input("Enter the url of the link to process: ")
     processingClicked = st.button ("Start Processing", key="processing")
-    #print('La url ingresa es:',urlLink)
-    #Respuesta = False
     if processingClicked:
         call_api(urlLink)
         #Enviar solicitud al modelo por medio del backend, controlar respuesta.
@@ -132,7 +131,7 @@ def LoggedOut_Clicked():
 def show_logout_page():
     loginSection.empty()
     with logOutSection:
-        st.sidebar.markdown("# Welcome LinkScribe Application :unlock:")
+        #st.sidebar.markdown("# Welcome LinkScribe Application :unlock:"+userName)
         st.sidebar.button ("Log Out", key="logout", on_click=LoggedOut_Clicked)
     
 def LoggedIn_Clicked(userName, password):

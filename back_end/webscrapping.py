@@ -12,7 +12,7 @@ hetulmehta, Hetul Mehta, Kaggle Expert, Mumbai, Maharashtra, India, Technical He
 """
 
 # 0 *****************************************************************************************************************
-
+import requests
 import pandas as pd
 from joblib import load
 
@@ -77,6 +77,19 @@ class Model:
                 and len(stripped_tag)>0:
                 result.append(stripped_tag)
         return ' '.join(result)
+    
+def jsonlink_api(self, url):
+    api_key = 'pk_9e55e2c86db183a04eb6403d476e8350bb8a2580'
+
+    params = {'url': url, 'api_key': api_key}
+    response = requests.get('https://jsonlink.io/api/extract', params=params)
+
+    if response.status_code == 200:
+        data = response.json()
+        print(data)
+        return data['title'], data['description'], data['domain'], data['favicon'], data['images'][0]
+    else:
+        print(f'Error: {response.status_code} - {response.text}')
 
 # 3 **************************************************************************************************************************
             
@@ -95,15 +108,16 @@ class Model:
 
 # 4 ***************************************************************************************************************************
 
-    def predict(self, url):
-         
-        try: 
-            web=dict(self.visit_url(url))
-            text=(self.clean_text(web['website_text']))
-            t=self.vectorizer.transform([text])
-            return self.dictionary[self.model.predict(t)[0]]           
-        except:
-            print("No se puede establecer una conexión al website!")
+def predict(self, url):         
+    try: 
+        title, description, domain, icon, siteimage = self.jsonlink_api(url)
+        web=dict(self.visit_url(url))
+        text=(self.clean_text(web['website_text']))
+        t=self.vectorizer.transform([text])
+        print(self.dictionary)
+        return title, description, domain, icon, siteimage, self.dictionary[self.model.predict(t)[0]]           
+    except:
+        print("No se puede establecer una conexión al website!")
 
 # * ***************************************************************************************************************************
 
