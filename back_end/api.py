@@ -3,6 +3,7 @@ from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 from contextlib import asynccontextmanager
 from webscrapping import Model
+from pruebas import predict
 
 web_model = {}
 
@@ -34,10 +35,11 @@ class WebModel(BaseModel):
         
 @model_router.post("/predict")
 async def predict(request: Request, data: WebModel):
-    web_model = Model()
+    #web_model = Model()
     if web_model is None:
         return JSONResponse(status_code=404, content={"message": "Model not found"})
-    prediction = web_model.predict(data.website_url)
+    #prediction = web_model.predict(data.website_url)
+    prediction = predict(str(data.website_url))
     return JSONResponse(content={"La url ingresada es": data.website_url,
                                  "La categoria de la url es": prediction})
 

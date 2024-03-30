@@ -16,7 +16,7 @@ logOutSection = st.container()
 
 def call_api(website_url):
   
-    api_url = "http://0.0.0.0:8070/model/predict"
+    api_url = "http://localhost:8070/model/predict"
 
     payload = json.dumps({
     "website_url": website_url

@@ -26,9 +26,9 @@ simplefilter(action='ignore', category=DeprecationWarning)
 class Model:
     
     def __init__(self): 
-        self.model = load('webscrapping/back_end/__model/sklearn/__model_A.pk')
-        self.vectorizer = load('webscrapping/back_end/__vectorizer/__vectorizer_A.pk')
-        self.dictionary = load('webscrapping/back_end/dictionary/id_to_category_dict_A.pk')
+        self.model = load('__model/sklearn/__model_A.pk')
+        self.vectorizer = load('__vectorizer/__vectorizer_A.pk')
+        self.dictionary = load('dictionary/id_to_category_dict_A.pk')
 
 # 2 *******************************************************************************************************************************
 
@@ -39,6 +39,7 @@ class Model:
             
         #headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36'}
         content = requests.get(website_url,timeout=60).content
+        print("Paso 0.1 predict!"+content)
         soup = BeautifulSoup(content, "lxml")
         result = {
             "website_url": website_url,
@@ -99,9 +100,13 @@ class Model:
     def predict(self, url):
          
         try: 
+            print("Paso 0 predict!")
             web=dict(self.visit_url(url))
+            print("Paso 1 predict!")
             text=(self.clean_text(web['website_text']))
+            print("Paso 2 predict!")
             t=self.vectorizer.transform([text])
+            print("Paso 3 predict!")
             return self.dictionary[self.model.predict(t)[0]]           
         except:
             print("No se puede establecer una conexión al website!")
