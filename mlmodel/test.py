@@ -38,7 +38,7 @@ for qty in cur:
 """
 #retrieving confirmation of exist user
 some_name = 'joaquin'
-some_pass = 'user'
+some_pass = 'userx'
 #some_name = 'joaquin1'
 cur.execute("Select count(row_id) as qty from user_name where user_id = ? or user_desc = ?", (some_name,some_name,))   
 
