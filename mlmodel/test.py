@@ -20,7 +20,7 @@ except mariadb.Error as e:
 cur = conn.cursor()
 cur1 = conn.cursor()
 cur2 = conn.cursor()
-
+"""
 #retrieving information 
 some_name = '%' 
 cur.execute("SELECT user_id, user_desc FROM user_name WHERE user_id like (?)", (some_name,)) 
@@ -35,7 +35,7 @@ cur.execute("Select count(row_id) as qty from user_name where (user_id = ? or us
 
 for qty in cur: 
     print(f"The user name: {some_name}, password is ok?: {qty}")
-
+"""
 #retrieving confirmation of exist user
 some_name = 'joaquin'
 some_pass = 'user'
@@ -43,7 +43,7 @@ some_pass = 'user'
 cur.execute("Select count(row_id) as qty from user_name where user_id = ? or user_desc = ?", (some_name,some_name,))   
 
 for qty in cur: 
-    print(f"The user name: {some_name}, is active?: {qty}")
+    # print(f"The user name: {some_name}, is active?: {qty}")
     if qty == (0,):
         print(f"{some_name} user not exist, please log a new user!") 
     else:
