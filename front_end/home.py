@@ -16,19 +16,23 @@ logOutSection = st.container()
 
 def call_api(website_url):
   
-    api_url = "http://localhost:8070/model/predict"
-
-    payload = json.dumps({
-    "website_url": website_url
-    })
-    headers = {
-    'Content-Type': 'application/json'
-    }
-
+    api_url = "http://localhost:8070/model/predict?model_name=web"
+    payload = json.dumps({"website_url": website_url})
+    headers = {'Content-Type': 'application/json'}
     response = requests.request("POST", api_url, headers=headers, data=payload)
     response_json = response.json()
-    st.write('La categoria de la url ingresada es:', response_json['La categoria de la url es'])
-    print(response.text)
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+        st.image(response_json['Icon'])
+        st.image(response_json['Site_image'], width = 300)
+
+    with col2:
+        st.write(response_json['Título'])
+        st.write(response_json['Descripción'])
+        st.write(response_json['Url'])
+        st.write(response_json['Categoría'])      
 
 # 2 *************************************************************************************************
 
@@ -49,7 +53,6 @@ def page_Link():
         #else:
         #    Mensaje = "Sorry, the link entered is not related to the different categories available ☹️"
         #st.write(Mensaje)
-        st.balloons()
 
     # ---- BARRA LATERAL ----
     st.sidebar.header("Add link to list:")
