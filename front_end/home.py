@@ -16,7 +16,7 @@ logOutSection = st.container()
 
 def call_api(website_url):
   
-    api_url = "http://0.0.0.0:8070/model/predict"
+    api_url = "http://localhost:8070/model/predict"
 
     payload = json.dumps({
     "website_url": website_url
@@ -27,7 +27,7 @@ def call_api(website_url):
 
     response = requests.request("POST", api_url, headers=headers, data=payload)
     response_json = response.json()
-    st.write('La categoria de la url ingresada es:', response_json['prediction'])
+    st.write('La categoria de la url ingresada es:', response_json['La categoria de la url es'])
     print(response.text)
 
 # 2 *************************************************************************************************
