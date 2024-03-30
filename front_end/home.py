@@ -4,6 +4,8 @@ import pandas as pd
 import numpy as np
 import requests
 import json
+import mariadb
+import sys
 
 # 0 ***********************************************************************************************
  
@@ -38,7 +40,7 @@ def page_Link():
     st.header("LinkScribe: Link processor")
     urlLink = st.text_input("Enter the url of the link to process: ")
     processingClicked = st.button ("Start Processing", key="processing")
-    print('La url ingresa es:',urlLink)
+    #print('La url ingresa es:',urlLink)
     #Respuesta = False
     if processingClicked:
         call_api(urlLink)
@@ -134,11 +136,12 @@ def show_logout_page():
         st.sidebar.button ("Log Out", key="logout", on_click=LoggedOut_Clicked)
     
 def LoggedIn_Clicked(userName, password):
-    if login(userName, password):
+    logStatus, messageLog = dbuser_consultation(userName,password)
+    if logStatus:        
         st.session_state['loggedIn'] = True
     else:
         st.session_state['loggedIn'] = False
-        st.error("Invalid user name or password")
+        st.error(messageLog)
     
 def show_login_page():
     with loginSection:
@@ -147,6 +150,54 @@ def show_login_page():
             userName = st.text_input (label="", value="", placeholder="Enter your user name")
             password = st.text_input (label="", value="",placeholder="Enter password", type="password")
             st.button ("Login", on_click=LoggedIn_Clicked, args= (userName, password))
+
+def dbuser_consultation(user_app, password):
+    try:
+        conn = mariadb.connect(
+            user = "user", # MARIADB_USER
+            password = "user", # MARIADB_PASSWORD
+            host = "127.0.0.1", # service name of the database container
+            port = 7706, # MARIADB EXPOSED PORT
+            database = "wsdb" # MARIADB_DATABASE
+        )
+    except mariadb.Error as e:
+        print(f"Error connecting to MariaDB Platform: {e}")
+        sys.exit(1)
+    
+    # Get Cursor
+    cur = conn.cursor()
+    cur1 = conn.cursor()
+    cur2 = conn.cursor()
+
+    #retrieving confirmation of exist user
+    some_name = user_app
+    some_pass = password
+    cur.execute("Select count(row_id) as qty from user_name where user_id = ? or user_desc = ?", (some_name,some_name,))   
+
+    for qty in cur: 
+        # print(f"The user name: {some_name}, is active?: {qty}")
+        if qty == (0,):
+            #print(f"{some_name} user not exist, please log a new user!")
+            messageLog = f"{some_name} user not exist, please log a new user!"
+            logStatus = False
+        else:
+            cur1.execute("Select count(row_id) as qty from user_name where (user_id = ? or user_desc = ?) and encrypt_pw = PASSWORD(?)", (some_name,some_name,some_pass,))  
+            for qty in cur1: 
+                if qty == (0,):
+                    #print(f"Wrong password for {some_name} user")
+                    messageLog = f"Wrong password for {some_name} user"
+                    logStatus = False
+                else:
+                    cur2.execute("Select user_desc from user_name where (user_id = ? or user_desc = ?) and encrypt_pw = PASSWORD(?)", (some_name,some_name,some_pass,)) 
+                    for user_desc in cur2:
+                        #print(f"WELCOME {user_desc}")
+                        messageLog = f"WELCOME {user_desc}"
+                        logStatus = True
+    
+    # close database connection
+    conn.close()
+
+    return logStatus, messageLog
 
 
 with headerSection:
