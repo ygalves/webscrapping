@@ -37,6 +37,7 @@ for qty in cur:
     print(f"The user name: {some_name}, password is ok?: {qty}")
 """
 #retrieving confirmation of exist user
+"""
 some_name = 'joaquin'
 some_pass = 'userx'
 #some_name = 'joaquin1'
@@ -56,10 +57,10 @@ for qty in cur:
                 for user_desc in cur2:
                     print(f"WELCOME {user_desc}")
 
-
+"""
 # insert information (for use getout triple quotes of paragraph complete )
 ## create new user into user_name table
-"""
+
 name = 'Alma Maria Silva de Alegria'
 nickname = 'ASilva'
 password = 'uaouser'
@@ -72,7 +73,7 @@ except mariadb.Error as e:
 
 conn.commit() 
 print(f"Last Inserted ID: {cur.lastrowid}")
-"""
+
 
 #insert information (for use getout triple quotes of paragraph complete )
 ## create new url category into results table
