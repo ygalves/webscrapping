@@ -39,12 +39,17 @@ async def predict(request: Request, data: WebModel):
     query_params = dict(request.query_params)
     model_name = query_params.get("model_name")
     model = web_model.get(model_name, None)
-    #web_model = Model()
+    print(data.website_url)
+    
     if model is None:
         return JSONResponse(status_code=404, content={"message": "Model not found"})
-    prediction = model.predict(data.website_url)
-    return JSONResponse(content={"La url ingresada es": data.website_url,
-                                 "La categoria de la url es": prediction})
+    title, description, domain, icon, siteimage, prediction = model.predict(data.website_url)
+    return JSONResponse(content={"Título": title,
+                                 "Descripción": description,
+                                 "Url": domain,
+                                 "Icon": icon,
+                                 "Site_image": siteimage, 
+                                 "Categoría": prediction})
 
 app.include_router(model_router)
 
