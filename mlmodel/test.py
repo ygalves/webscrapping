@@ -99,7 +99,7 @@ list = 'global'
 try: 
     cur.execute("Select row_id as user_id from user_name where user_id = ? and user_desc = ?", (name,nickname,)) 
     for user_id in cur: 
-        cur1.execute("Select list_id from list where list_name = ?", (list,)) 
+        cur1.execute("Select list_id from list where list_id= ?", (user_id,)) 
         for list_id in cur: 
     cur.execute("INSERT INTO `result`(`url_data`, `cat1`, `cat2`, `cat3`, `cat4`, `cat5`,`lat-edit_comment`, `user_id`) VALUES (?,?,?,?,?,?,?,?)", (url, cat1, cat2, cat3, cat4, cat5, comment, name)) 
 except mariadb.Error as e: 

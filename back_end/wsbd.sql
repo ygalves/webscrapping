@@ -11,7 +11,7 @@
 -- UAO IA SPECIALIST 
 -- WEBSCRAPPING DATABASE CREATING 
 --  IA TASKFORCE - 2024
--- V: 2.5.0
+-- V: 3.0.0
 -- Create List table, update db structure and set user_name trigger to create default global list
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -53,7 +53,7 @@ CREATE TABLE `user_name` (
 --
 DROP TRIGGER IF EXISTS `TRG_list`;
 DELIMITER $$
-CREATE TRIGGER `TRG_list` AFTER INSERT ON `user_name` FOR EACH ROW INSERT INTO `list`(`list_name`, `created_by`, `last_edit_comment`) VALUES ('global',NEW.row_id,'root')
+CREATE TRIGGER `TRG_list_usrn` AFTER INSERT ON `user_name` FOR EACH ROW INSERT INTO `list`(`list_name`, `user_id`, `last_edit_comment`) VALUES ('global',NEW.row_id,'root')
 $$
 DELIMITER ;
 
@@ -72,7 +72,7 @@ CREATE TABLE `list` (
   `spare3` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `spare4` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `spare5` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `created_by` bigint(20) NOT NULL,
+  `user_id` bigint(20) NOT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   `last_edit_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `last_edit_comment` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL
@@ -116,24 +116,24 @@ CREATE TABLE `result` (
 --
 ALTER TABLE `list`
   ADD PRIMARY KEY (`row_id`) USING BTREE,
-  ADD UNIQUE KEY `IX_listbyuser` (`list_name`,`created_by`) USING BTREE,
-  ADD KEY `created_by` (`created_by`);
+  ADD UNIQUE KEY `IX_list_user_lst` (`list_name`,`user_id`) USING BTREE,
+  ADD KEY `IX_userid_lst` (`user_id`);
 
 --
 -- Indices de la tabla `result`
 --
 ALTER TABLE `result`
   ADD PRIMARY KEY (`row_id`) USING BTREE,
-  ADD KEY `IX_user_url` (`user_id`,`url_data`) USING BTREE,
-  ADD KEY `IX_list_url` (`list_id`,`url_data`) USING BTREE;
+  ADD KEY `IX_user_url_rslt` (`user_id`,`url_data`) USING BTREE,
+  ADD KEY `IX_list_url_rslt` (`list_id`,`url_data`) USING BTREE;
 
 --
 -- Indices de la tabla `user_name`
 --
 ALTER TABLE `user_name`
   ADD PRIMARY KEY (`row_id`),
-  ADD UNIQUE KEY `IXU_userid` (`user_id`),
-  ADD KEY `IX_rowid` (`row_id`);
+  ADD UNIQUE KEY `IX_userid_usrn` (`user_id`),
+  ADD KEY `IX_rowid_usrn` (`row_id`);
 
 --
 -- AUTO_INCREMENT de las tablas volcadas
@@ -165,7 +165,7 @@ ALTER TABLE `user_name`
 -- Filtros para la tabla `list`
 --
 ALTER TABLE `list`
-  ADD CONSTRAINT `list_ibfk_1` FOREIGN KEY (`created_by`) REFERENCES `user_name` (`row_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `list_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user_name` (`row_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `result`
