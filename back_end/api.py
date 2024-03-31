@@ -39,6 +39,7 @@ async def predict(request: Request, data: WebModel):
     query_params = dict(request.query_params)
     model_name = query_params.get("model_name")
     model = web_model.get(model_name, None)
+    print(data.website_url)
     
     if model is None:
         return JSONResponse(status_code=404, content={"message": "Model not found"})

@@ -26,9 +26,9 @@ simplefilter(action='ignore', category=DeprecationWarning)
 class Model:
     
     def __init__(self): 
-        self.model = load('back_end\__model\sklearn\__model_A.pk')
-        self.vectorizer = load('back_end\__vectorizer\__vectorizer_A.pk')
-        self.dictionary = load('back_end\dictionary\id_to_category_dict_A.pk')
+        self.model = load(r'C:\Users\incom\proyectosGit\webscrapping\back_end\__model\sklearn\__model_A.pk')
+        self.vectorizer = load(r'C:\Users\incom\proyectosGit\webscrapping\back_end\__vectorizer\__vectorizer_A.pk')
+        self.dictionary = load(r'C:\Users\incom\proyectosGit\webscrapping\back_end\dictionary\id_to_category_dict_A.pk')
 
 # 2 *******************************************************************************************************************************
 
@@ -78,18 +78,18 @@ class Model:
                 result.append(stripped_tag)
         return ' '.join(result)
     
-def jsonlink_api(self, url):
-    api_key = 'pk_9e55e2c86db183a04eb6403d476e8350bb8a2580'
+    def jsonlink_api(self, url):
+        api_key = 'pk_9e55e2c86db183a04eb6403d476e8350bb8a2580'
 
-    params = {'url': url, 'api_key': api_key}
-    response = requests.get('https://jsonlink.io/api/extract', params=params)
+        params = {'url': url, 'api_key': api_key}
+        response = requests.get('https://jsonlink.io/api/extract', params=params)
 
-    if response.status_code == 200:
-        data = response.json()
-        print(data)
-        return data['title'], data['description'], data['domain'], data['favicon'], data['images'][0]
-    else:
-        print(f'Error: {response.status_code} - {response.text}')
+        if response.status_code == 200:
+            data = response.json()
+            print(data)
+            return data['title'], data['description'], data['domain'], data['favicon'], data['images'][0]
+        else:
+            print(f'Error: {response.status_code} - {response.text}')
 
 # 3 **************************************************************************************************************************
             
@@ -108,16 +108,16 @@ def jsonlink_api(self, url):
 
 # 4 ***************************************************************************************************************************
 
-def predict(self, url):         
-    try: 
-        title, description, domain, icon, siteimage = self.jsonlink_api(url)
-        web=dict(self.visit_url(url))
-        text=(self.clean_text(web['website_text']))
-        t=self.vectorizer.transform([text])
-        print(self.dictionary)
-        return title, description, domain, icon, siteimage, self.dictionary[self.model.predict(t)[0]]           
-    except:
-        print("No se puede establecer una conexión al website!")
+    def predict(self, url):         
+        try: 
+            title, description, domain, icon, siteimage = self.jsonlink_api(url)
+            web=dict(self.visit_url(url))
+            text=(self.clean_text(web['website_text']))
+            t=self.vectorizer.transform([text])
+            print(self.dictionary)
+            return title, description, domain, icon, siteimage, self.dictionary[self.model.predict(t)[0]]           
+        except:
+            print("No se puede establecer una conexión al website!")
 
 # * ***************************************************************************************************************************
 
