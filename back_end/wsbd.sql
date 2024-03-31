@@ -19,7 +19,7 @@ START TRANSACTION;
 SET time_zone = "+00:00";
 
 --
--- Base de datos: `wsdb`
+-- Base de datos: `wsdb1`
 --
 CREATE DATABASE IF NOT EXISTS `wsdb` DEFAULT CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci;
 USE `wsdb`;
@@ -49,13 +49,6 @@ CREATE TABLE `user_name` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `user_name`
---
-
-INSERT INTO `user_name` (`row_id`, `user_id`, `user_desc`, `encrypt_pw`, `active`, `spare1`, `spare2`, `spare3`, `spare4`, `spare5`, `created_at`, `last_edit_at`, `last_edit_comment`) VALUES
-(9, 'Yoniliman Galvis Aguirre', 'ygalves', '*4D0DD2673C1DE57138354E81A957460B774C4BC2', 1, NULL, NULL, NULL, NULL, NULL, '2024-03-31 01:04:51', '2024-03-31 01:04:51', 'Start');
-
---
 -- Disparadores `user_name`
 --
 DROP TRIGGER IF EXISTS `TRG_list`;
@@ -74,23 +67,16 @@ DROP TABLE IF EXISTS `list`;
 CREATE TABLE `list` (
   `row_id` bigint(20) NOT NULL,
   `list_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `created_by` bigint(20) NOT NULL,
-  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `last_edit_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `last_edit_comment` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `spare1` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `spare2` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `spare3` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `spare4` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `spare5` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL
+  `spare5` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `created_by` bigint(20) NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `last_edit_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `last_edit_comment` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
-
---
--- Volcado de datos para la tabla `list`
---
-
-INSERT INTO `list` (`row_id`, `list_name`, `created_by`, `created_at`, `last_edit_at`, `last_edit_comment`, `spare1`, `spare2`, `spare3`, `spare4`, `spare5`) VALUES
-(1, 'global', 9, '2024-03-31 01:04:51', '2024-03-31 01:04:51', 'root', NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -107,7 +93,6 @@ CREATE TABLE `result` (
   `cat3` tinytext DEFAULT NULL,
   `cat4` tinytext DEFAULT NULL,
   `cat5` tinytext DEFAULT NULL,
-  `list_name` bigint(20) NOT NULL,
   `spare1` varchar(500) DEFAULT NULL,
   `spare2` varchar(500) DEFAULT NULL,
   `spare3` varchar(500) DEFAULT NULL,
@@ -116,6 +101,7 @@ CREATE TABLE `result` (
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   `last_edit_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `last_edit_comment` varchar(500) DEFAULT NULL,
+  `list_id` bigint(20) NOT NULL,
   `user_id` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='webscrapping results from ML api';
 
@@ -139,7 +125,7 @@ ALTER TABLE `list`
 ALTER TABLE `result`
   ADD PRIMARY KEY (`row_id`) USING BTREE,
   ADD KEY `IX_user_url` (`user_id`,`url_data`) USING BTREE,
-  ADD KEY `IX_list_url` (`list_name`,`url_data`) USING BTREE;
+  ADD KEY `IX_list_url` (`list_id`,`url_data`) USING BTREE;
 
 --
 -- Indices de la tabla `user_name`
@@ -185,6 +171,6 @@ ALTER TABLE `list`
 -- Filtros para la tabla `result`
 --
 ALTER TABLE `result`
-  ADD CONSTRAINT `result_ibfk_1` FOREIGN KEY (`list_name`) REFERENCES `list` (`row_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `result_ibfk_1` FOREIGN KEY (`list_id`) REFERENCES `list` (`row_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `result_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `user_name` (`row_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;

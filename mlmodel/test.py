@@ -60,7 +60,8 @@ for qty in cur:
 """
 # insert information (for use getout triple quotes of paragraph complete )
 ## create new user into user_name table
-
+### V2
+"""
 name = 'Alma Maria Silva de Alegria'
 nickname = 'ASilva'
 password = 'uaouser'
@@ -72,12 +73,18 @@ except mariadb.Error as e:
     print(f"Error: {e}")
 
 conn.commit() 
-print(f"Last Inserted ID: {cur.lastrowid}")
+# print(f"Last Inserted ID: {cur.lastrowid}")
+if cur.lastrowid:
+    print(f"Welcome {nickname}")
+else:
+    print(f"USER ALREADY EXIST: {name} - {nickname}")
 
-
-#insert information (for use getout triple quotes of paragraph complete )
-## create new url category into results table
 """
+
+# insert information (for use getout triple quotes of paragraph complete )
+## create new url category into results table
+### V2
+
 url = 'www.pornhub.com'
 cat1 = 'Adult'
 cat2 = 'Education'
@@ -86,8 +93,14 @@ cat4 = 'Sports'
 cat5 = 'Entertainment'
 comment = 'Test'
 name = 'Alma Maria Silva de Alegria'
+nickname = 'ASilva'
+list = 'global'
 
 try: 
+    cur.execute("Select row_id as user_id from user_name where user_id = ? and user_desc = ?", (name,nickname,)) 
+    for user_id in cur: 
+        cur1.execute("Select list_id from list where list_name = ?", (list,)) 
+        for list_id in cur: 
     cur.execute("INSERT INTO `result`(`url_data`, `cat1`, `cat2`, `cat3`, `cat4`, `cat5`,`lat-edit_comment`, `user_id`) VALUES (?,?,?,?,?,?,?,?)", (url, cat1, cat2, cat3, cat4, cat5, comment, name)) 
 except mariadb.Error as e: 
     print(f"Error: {e}")
@@ -95,6 +108,6 @@ except mariadb.Error as e:
 conn.commit() 
 print(f"Last Inserted ID: {cur.lastrowid}")
 
-"""
+
 # close database connection
 conn.close()
