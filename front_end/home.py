@@ -131,12 +131,13 @@ def LoggedOut_Clicked():
 def show_logout_page():
     loginSection.empty()
     with logOutSection:
-        #st.sidebar.markdown("# Welcome LinkScribe Application :unlock:"+userName)
+        st.sidebar.markdown(f'# Welcome LinkScribe Application {st.session_state.userN}')
         st.sidebar.button ("Log Out", key="logout", on_click=LoggedOut_Clicked)
     
 def LoggedIn_Clicked(userName, password):
     logStatus, messageLog = dbuser_consultation(userName,password)
-    if logStatus:        
+    if logStatus:
+        st.session_state.userN = userName        
         st.session_state['loggedIn'] = True
     else:
         st.session_state['loggedIn'] = False
@@ -146,6 +147,7 @@ def show_login_page():
     with loginSection:
         if st.session_state['loggedIn'] == False:
             st.title("LinkScribe Application")
+            st.session_state.userN = ""
             userName = st.text_input (label="", value="", placeholder="Enter your user name")
             password = st.text_input (label="", value="",placeholder="Enter password", type="password")
             st.button ("Login", on_click=LoggedIn_Clicked, args= (userName, password))
