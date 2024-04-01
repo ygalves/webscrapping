@@ -42,6 +42,36 @@ Nos basamos y usamos el conocimiento de los siguientes autores a los cuales les 
         https://www.kaggle.com/code/hetulmehta/classification-of-websites
     - pagutierrez, Pedro Antonio Gutiérrez, Ph.D Computer Science and Artificial Intelligence, Spain, University of Córdoba
         https://notebook.community/pagutierrez/tutorial-sklearn/notebooks-spanish/11-extraccion_caracteristicas_texto
+    - https://jsonlink.io/
+
+#### Dataset:
+    - website_classification.csv
+    - 1408 samples
+    - 3 columns ['website_url','cleaned_website_text','Category']
+    - 16 categories
+    
+#### Librerias de Python:
+    NLP
+    - Scikit-learn TfidfVectorizer
+    - NLP Spacy model en_core_web_sm
+    - Text parsing lxml
+    API REST:
+    - FastApi
+    - Requests
+    ML model and hyperparameter tunning tool:
+    - Scikit-learn LinearSVC
+    - Scikit-learn CalibratedClassifierCV
+    Web server:
+    - Uvicorn
+    Python environment and libraries documentation:
+    - Pyenv
+    - Poetry
+    Web page development:
+    - Streamlit
+    - json
+    Database:
+    - Mariadb
+
 #### Backend
     - Vanessa Richie Alia-Trapero,  Senior Full Stack Web Dev & AI Enthusiast, Philippines
         https://github.com/vratengr/docker
