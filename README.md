@@ -58,7 +58,7 @@ Nos basamos y usamos el conocimiento de los siguientes autores a los cuales les 
     API REST:
     - FastApi
     - Requests
-    ML model and hyperparameter tunning tool:
+    ML model and calibration tool:
     - Scikit-learn LinearSVC
     - Scikit-learn CalibratedClassifierCV
     Web server:
