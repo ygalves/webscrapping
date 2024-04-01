@@ -11,24 +11,32 @@
 services:
     db: # service name for our database and can be customized per your setup
       container_name: docker-mariadb # <container-name>
-      image: mariadb:11.0 # https://hub.docker.com/_/mariadb
+      image: ygalves/mariadb:11.V1 #mariadb:V1 # https://hub.docker.com/_/mariadb
       restart: on-failure:5 #always # restarts the service whenever any defined configuration changes
       networks:
         - back-tier # <network-name>
       expose:
-        - "7706"
+        - 3306
       ports:
-        - "7706:3306"
+        - 3306:3306
+        - 8080:80
+      #  - "7706:3306"
+      tty: true
       volumes:
         - ./config/db:/docker-entrypoint-initdb.d/ # <source folder>:/docker-entrypoint-initdb.d/ - this will dump all the .sql or tar files in source folder
         - ./config/db/data.sql:/docker-entrypoint-initdb.d/data.sql # dump specific file
         #- ./config/db/data.sql:/docker-entrypoint-initdb.d/db.sql # dump specific file
         - dbdata:/var/lib/mysql # <volume name>:<mapped location within the container>
+        #- mariadb_config:/etc/mysql
       environment:
         MARIADB_ROOT_PASSWORD : root # <root-password>
         MARIADB_DATABASE: wsdb # <database-name>
         MARIADB_USER : user # <database-user>
         MARIADB_PASSWORD : user # <user-password>
+
+      build: # there may be cases where you need to customize an image from Docker Hub, so instead of specifying an image for this service, we will define the image via the Dockerfile
+      #  context: . # path to where the Dockerfile resides
+          dockerfile: Dockerfile_db # name of the Dockerfile, default is Dockerfile, you can omit this if you follow the standard naming
 
     phpmyadmin: # optional if you want to have GUI for your database
       container_name: docker-phpmyadmin
@@ -47,3 +55,6 @@ networks: # an app usually needs multiple services to function, defining a netwo
 
 volumes: # we are going to persist the db data using volumes so that even if you stop the container, the data will persist within docker
   dbdata: # <volume-name> - in Docker Dsektop, this will be prepended with the folder name
+  mariadb_config:
+    external: true
+    name: mariadb_config

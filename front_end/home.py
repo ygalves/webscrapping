@@ -157,7 +157,7 @@ def dbuser_consultation(user_app, password):
         conn = mariadb.connect(
             user = "user", # MARIADB_USER
             password = "user", # MARIADB_PASSWORD
-            host = "127.0.0.1", # service name of the database container
+            host = "db", # service name of the database container
             port = 7706, # MARIADB EXPOSED PORT
             database = "wsdb" # MARIADB_DATABASE
         )
