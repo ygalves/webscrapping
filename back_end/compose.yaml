@@ -11,14 +11,14 @@
 services:
     db: # service name for our database and can be customized per your setup
       container_name: docker-mariadb # <container-name>
-      image: mariadb:11.0 # https://hub.docker.com/_/mariadb
+      image: ygalves/mariadb:11.V1 # https://hub.docker.com/_/mariadb
       restart: on-failure:5 #always # restarts the service whenever any defined configuration changes
       networks:
         - back-tier # <network-name>
       expose:
-        - "7706"
+        - "3306"
       ports:
-        - "7706:3306"
+        - "3306:3306"
       volumes:
         - ./config/db:/docker-entrypoint-initdb.d/ # <source folder>:/docker-entrypoint-initdb.d/ - this will dump all the .sql or tar files in source folder
         - ./config/db/data.sql:/docker-entrypoint-initdb.d/data.sql # dump specific file
@@ -39,6 +39,18 @@ services:
       ports:
         - 5004:80
       depends_on:
+        - db
+    
+    api: # optional if you want to have GUI for your database
+      container_name: docker-api
+      image: guillotine/webscrappingbackend
+      restart: on-failure:5 #always
+      networks:
+        - back-tier
+      ports:
+        - 8070:8070
+      command: python /home/webscrapping/back_end/main.py
+      depends_on: 
         - db
 
 networks: # an app usually needs multiple services to function, defining a network groups these services to create the app environment
