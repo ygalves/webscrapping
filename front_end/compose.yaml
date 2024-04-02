@@ -41,6 +41,7 @@ services:
       image: mi_app_streamlit
       external_links:
         - docker-mariadb:db
+        - docker-api:api
       networks:
         - front-tier
         - back_end_back-tier

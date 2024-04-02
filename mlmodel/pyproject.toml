@@ -10,7 +10,7 @@ python = "^3.12"
 gcc = "^13.2.0"
 python3-dev  = "^3.11.4-5"
 openssl = "^3.0.10-1ubuntu2.3"
-libmariadb-dev = "^1:10.11.4-1
+libmariadb-dev = "^1:10.11.4-1"
 mariadb = "^1.1.10"
 
 [build-system]

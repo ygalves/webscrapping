@@ -4,7 +4,8 @@ import pandas as pd
 import numpy as np
 import requests
 import json
-import mariadb
+#import mariadb
+import mysql.connector as msc
 import sys
 
 # 0 ***********************************************************************************************
@@ -17,7 +18,7 @@ logOutSection = st.container()
 # 1 ***********************************************************************************************
 
 def call_api(website_url):  
-    api_url = "http://localhost:8070/model/predict?model_name=web"
+    api_url = "http://docker_api:8070/model/predict?model_name=web"
     payload = json.dumps({"website_url": website_url})
     headers = {'Content-Type': 'application/json'}
     response = requests.request("POST", api_url, headers=headers, data=payload)
@@ -154,14 +155,14 @@ def show_login_page():
 
 def dbuser_consultation(user_app, password):
     try:
-        conn = mariadb.connect(
+        conn = msc.connect(
             user = "user", # MARIADB_USER
             password = "user", # MARIADB_PASSWORD
-            host = "127.0.0.1", # service name of the database container
-            port = 7706, # MARIADB EXPOSED PORT
+            host = "db", # service name of the database container
+            port = 3306, # MARIADB EXPOSED PORT
             database = "wsdb" # MARIADB_DATABASE
         )
-    except mariadb.Error as e:
+    except msc.Error as e:
         print(f"Error connecting to MariaDB Platform: {e}")
         sys.exit(1)
     
@@ -173,7 +174,8 @@ def dbuser_consultation(user_app, password):
     #retrieving confirmation of exist user
     some_name = user_app
     some_pass = password
-    cur.execute("Select count(row_id) as qty from user_name where user_id = ? or user_desc = ?", (some_name,some_name,))   
+    print(pd.read_sql('SELECT * FROM user_name;', conn))
+    cur.execute("SELECT count(row_id) as qty from user_name WHERE user_id = %s OR user_desc = %s", (some_name,some_name))   
 
     for qty in cur: 
         # print(f"The user name: {some_name}, is active?: {qty}")
@@ -182,14 +184,14 @@ def dbuser_consultation(user_app, password):
             messageLog = f"{some_name} user not exist, please log a new user!"
             logStatus = False
         else:
-            cur1.execute("Select count(row_id) as qty from user_name where (user_id = ? or user_desc = ?) and encrypt_pw = PASSWORD(?)", (some_name,some_name,some_pass,))  
+            cur1.execute("Select count(row_id) as qty from user_name where (user_id = %s or user_desc = %s) and encrypt_pw = PASSWORD(%s)", (some_name,some_name,some_pass))  
             for qty in cur1: 
                 if qty == (0,):
                     #print(f"Wrong password for {some_name} user")
                     messageLog = f"Wrong password for {some_name} user"
                     logStatus = False
                 else:
-                    cur2.execute("Select user_desc from user_name where (user_id = ? or user_desc = ?) and encrypt_pw = PASSWORD(?)", (some_name,some_name,some_pass,)) 
+                    cur2.execute("Select user_desc from user_name where (user_id = %s or user_desc = %s) and encrypt_pw = PASSWORD(%s)", (some_name,some_name,some_pass)) 
                     for user_desc in cur2:
                         #print(f"WELCOME {user_desc}")
                         messageLog = f"WELCOME {user_desc}"
