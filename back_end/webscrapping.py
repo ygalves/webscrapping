@@ -11,7 +11,7 @@ https://www.kaggle.com/code/scratchpad/notebook8622d098de/edit
 hetulmehta, Hetul Mehta, Kaggle Expert, Mumbai, Maharashtra, India, Technical Head at DataZen
 """
 
-# 0 *****************************************************************************************************************
+# 0 ******************************************************************************************************************************
 import requests
 import pandas as pd
 from joblib import load
@@ -26,9 +26,14 @@ simplefilter(action='ignore', category=DeprecationWarning)
 class Model:
     
     def __init__(self): 
-        self.model = load(r'C:\Users\incom\proyectosGit\webscrapping\back_end\__model\sklearn\__model_A.pk')
-        self.vectorizer = load(r'C:\Users\incom\proyectosGit\webscrapping\back_end\__vectorizer\__vectorizer_A.pk')
-        self.dictionary = load(r'C:\Users\incom\proyectosGit\webscrapping\back_end\dictionary\id_to_category_dict_A.pk')
+        #self.model = load('Back_end\Model\Sklearn\Model_A.pk')
+        #self.vectorizer = load('Back_end\Vectorizer\Vectorizer_A.pk')
+        #self.dictionary = load('Back_end\Dictionary\Id_to_category_dict_A.pk')
+        self.model = load('Model/Sklearn/Model_A.pk')
+        self.vectorizer = load('Vectorizer/Vectorizer_A.pk')
+        self.dictionary = load('Dictionary/Id_to_category_dict_A.pk')
+
+        
 
 # 2 *******************************************************************************************************************************
 
@@ -86,7 +91,7 @@ class Model:
 
         if response.status_code == 200:
             data = response.json()
-            print(data)
+            #print(data)
             return data['title'], data['description'], data['domain'], data['favicon'], data['images'][0]
         else:
             print(f'Error: {response.status_code} - {response.text}')
@@ -111,16 +116,17 @@ class Model:
     def predict(self, url):         
         try: 
             title, description, domain, icon, siteimage = self.jsonlink_api(url)
+            print(title)
             web=dict(self.visit_url(url))
             text=(self.clean_text(web['website_text']))
             t=self.vectorizer.transform([text])
             print(self.dictionary)
+            print(self.model.predict(t)[0])
             return title, description, domain, icon, siteimage, self.dictionary[self.model.predict(t)[0]]           
         except:
             print("No se puede establecer una conexión al website!")
 
 # * ***************************************************************************************************************************
-
 
 
 

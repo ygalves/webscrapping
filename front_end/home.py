@@ -18,7 +18,7 @@ logOutSection = st.container()
 # 1 ***********************************************************************************************
 
 def call_api(website_url):  
-    api_url = "http://docker_api:8070/model/predict?model_name=web"
+    api_url = "http://docker-api_a:8040/model/predict?model_name=web"
     payload = json.dumps({"website_url": website_url})
     headers = {'Content-Type': 'application/json'}
     response = requests.request("POST", api_url, headers=headers, data=payload)

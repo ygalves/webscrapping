@@ -39,12 +39,11 @@ services:
       container_name: docker-streamlit
       restart: on-failure:5 #always
       image: mi_app_streamlit
-      external_links:
-        - docker-mariadb:db
-        - docker-api:api
       networks:
         - front-tier
         - back_end_back-tier
+      external_links:
+        - docker-mariadb:db
       ports:
         - 8501:8501 # map TCP port 80 to xxxx
       # - "0.0.0.0:4004:443" # other format to specify the port mapping

@@ -7,6 +7,7 @@ FROM python:3.10.9
 
 #RUN curl -sS https://downloads.mariadb.com/MariaDB/mariadb_repo_setup | bash
 RUN apt-get update
+RUN apt install python3-pip -y
 #RUN apt-get install libmariadb-dev -y
 #RUN apt-get install libmariadb3 -y
 RUN apt-get install vim -y

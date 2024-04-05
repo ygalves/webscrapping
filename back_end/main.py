@@ -6,5 +6,5 @@ if __name__ == "__main__":
         "api:app", 
         host="0.0.0.0", 
         reload=True, 
-        port=int(os.environ.get("PORT", 8070)) 
+        port=int(os.environ.get("PORT", 8040)) 
     )

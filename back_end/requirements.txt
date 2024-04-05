@@ -1,0 +1,9 @@
+requests
+pandas
+joblib
+bs4
+uvicorn
+fastapi
+pydantic
+scikit-learn
+lxml
