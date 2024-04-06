@@ -30,7 +30,7 @@ COPY webscrapping.py ./webscrapping.py
 
 COPY Model/Sklearn/Model_A.pk Model/Sklearn/Model_A.pk
 COPY Vectorizer/Vectorizer_A.pk Vectorizer/Vectorizer_A.pk
-COPY Dictionary/Id_to_category_dict_A.pk Dictionary/Id_to_category_dict_A.pk
+COPY dictionary/id_to_category_dict_A.pk Dictionary/Id_to_category_dict_A.pk
 
 EXPOSE 8040
 
