@@ -18,10 +18,14 @@ START TRANSACTION;
 SET time_zone = "+00:00";
 
 --
--- Base de datos: `wsdb`
 --
+-- Base de datos: wsdb
+--
+CREATE DATABASE IF NOT EXISTS `wsdb` DEFAULT CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci;
+USE `wsdb`;
 
 -- --------------------------------------------------------
+
 
 --
 -- Estructura de tabla para la tabla `list`
